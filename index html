@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <title>DiamanteBlack 💎</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #07000f;
+      --surface: #0f0020;
+      --surface2: #180030;
+      --border: #00f0ff33;
+      --border-bright: #00f0ff;
+      --accent: #00f0ff;
+      --accent2: #ff00ff;
+      --text: #e0e8ff;
+      --text-muted: #5a6080;
+      --success: #00ffaa;
+      --danger: #ff3355;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body { width: 100%; height: 100%; overflow: hidden; }
+
+    body {
+      font-family: 'DM Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* ── Screens ── */
+    .screen {
+      height: 100dvh;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at 50% 0%, #1a003399 0%, var(--bg) 70%);
+    }
+
+    .card {
+      background: var(--surface);
+      padding: 40px 30px;
+      border-radius: 24px;
+      border: 1px solid var(--border-bright);
+      box-shadow: 0 0 60px rgba(0,240,255,0.15), inset 0 1px 0 rgba(0,240,255,0.2);
+      max-width: 400px;
+      width: 92%;
+      text-align: center;
+    }
+
+    .logo-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 38px;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
+      margin-bottom: 6px;
+    }
+
+    .logo-sub {
+      color: var(--text-muted);
+      font-size: 12px;
+      letter-spacing: 3px;
+      margin-bottom: 28px;
+    }
+
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 14px 16px;
+      margin: 6px 0;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus { border-color: var(--accent); }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      background: linear-gradient(135deg, var(--accent), #0088aa);
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:active { opacity: 0.8; }
+
+    .btn-ghost {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 12px;
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-ghost:active { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Chat screen ── */
+    .chat-screen {
+      display: none;
+      flex-direction: column;
+      height: 100dvh;
+    }
+
+    /* Header */
+    .header {
+      background: var(--surface);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .header-left { display: flex; align-items: center; gap: 12px; }
+
+    .header-logo {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .header-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .header-status {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 6px var(--success);
+      animation: blink 2s infinite;
+    }
+    .status-dot.thinking { background: var(--accent2); box-shadow: 0 0 6px var(--accent2); }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .header-btns { display: flex; gap: 8px; }
+
+    .icon-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .icon-btn:active { background: rgba(0,240,255,0.1); }
+
+    /* Chat area */
+    .chat-area {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 16px 12px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: var(--bg);
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .msg {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      animation: slideIn 0.2s ease;
+    }
+    @keyframes slideIn {
+      from { opacity:0; transform:translateY(6px) }
+      to   { opacity:1; transform:translateY(0) }
+    }
+
+    .msg.user { flex-direction: row-reverse; }
+
+    .msg-avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      border: 1px solid var(--border);
+    }
+    .msg.bot .msg-avatar { background: linear-gradient(135deg, #1a0030, #000820); }
+    .msg.user .msg-avatar { background: linear-gradient(135deg, #003333, #001a1a); }
+
+    .bubble {
+      max-width: 84%;
+      padding: 12px 14px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.65;
+      word-break: break-word;
+    }
+
+    .msg.bot .bubble {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top-left-radius: 4px;
+      color: var(--text);
+    }
+
+    .msg.user .bubble {
+      background: linear-gradient(135deg, #003344, #001a22);
+      border: 1px solid rgba(0,240,255,0.3);
+      border-top-right-radius: 4px;
+      color: var(--text);
+    }
+
+    .bubble pre {
+      background: #050510;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      overflow-x: auto;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      margin: 8px 0;
+      white-space: pre-wrap;
+    }
+
+    .bubble code {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      background: rgba(0,240,255,0.1);
+      color: var(--accent);
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    .bubble pre code { background: transparent; color: var(--text); padding: 0; }
+
+    .msg-actions {
+      display: flex; gap: 6px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .act-btn {
+      background: rgba(0,240,255,0.07);
+      border: 1px solid var(--border);
+      color: var(--accent);
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+      font-family: 'DM Mono', monospace;
+      transition: all 0.2s;
+    }
+    .act-btn:active { background: rgba(0,240,255,0.2); }
+
+    /* Typing */
+    .typing-wrap {
+      display: flex; gap: 10px; align-items: center;
+    }
+    .typing-dots {
+      display: flex; gap: 5px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      border-top-left-radius: 4px;
+    }
+    .typing-dots span {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: tdot 1.2s infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay:.2s }
+    .typing-dots span:nth-child(3) { animation-delay:.4s }
+    @keyframes tdot {
+      0%,80%,100% { opacity:0.2; transform:scale(0.8) }
+      40% { opacity:1; transform:scale(1.1) }
+    }
+
+    /* Input */
+    .input-area {
+      padding: 10px 12px;
+      padding-bottom: max(10px, env(safe-area-inset-bottom));
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      flex-shrink: 0;
+      z-index: 20;
+    }
+
+    #msgInput {
+      flex: 1;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 11px 14px;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      resize: none;
+      min-height: 44px;
+      max-height: 130px;
+      outline: none;
+      transition: border-color 0.2s;
+      line-height: 1.5;
+    }
+    #msgInput:focus { border-color: var(--accent); }
+    #msgInput::placeholder { color: var(--text-muted); }
+
+    .send-btn {
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #006688, var(--accent));
+      border: none;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      transition: opacity 0.2s;
+    }
+    .send-btn:active { opacity: 0.75; }
+    .send-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 999;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .modal.open { display: flex; }
+
+    .modal-sheet {
+      background: var(--surface);
+      border: 1px solid var(--border-bright);
+      border-radius: 24px 24px 0 0;
+      width: 100%;
+      max-width: 500px;
+      max-height: 80dvh;
+      overflow-y: auto;
+      padding: 20px;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%) }
+      to   { transform: translateY(0) }
+    }
+
+    .modal-top {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin: 16px 0 10px;
+    }
+
+    .agent-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 11px 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .toggle {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      background: transparent;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+      color: transparent;
+      transition: all 0.2s;
+    }
+    .toggle.on { background: var(--accent); color: #000; }
+
+    .wide-btn {
+      width: 100%;
+      padding: 12px;
+      margin: 6px 0;
+      background: var(--surface2);
+      border: 1px solid var(--border-bright);
+      color: var(--accent);
+      border-radius: 12px;
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+    }
+    .wide-btn:active { background: rgba(0,240,255,0.12); }
+
+    .info-box {
+      background: var(--surface2);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-top: 10px;
+    }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--danger);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+      z-index: 9999;
+      white-space: nowrap;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    #toast.ok { background: var(--success); color: #000; }
+  </style>
+</head>
+<body>
+
+<!-- ── REGISTRO ── -->
+<div class="screen" id="registerScreen">
+  <div class="card">
+    <div class="logo-title">DiamanteBlack 💎</div>
+    <div class="logo-sub">CRIAR CONTA</div>
+    <input type="email" id="regEmail" placeholder="seu@email.com">
+    <input type="password" id="regSenha" placeholder="Senha">
+    <button class="btn-primary" onclick="registrar()">REGISTRAR</button>
+    <button class="btn-ghost" onclick="irLogin()">Já tenho conta →</button>
+  </div>
+</div>
+
+<!-- ── LOGIN ── -->
+<div class="screen" id="loginScreen">
+  <div class="card">
+    <div class="logo-title">DiamanteBlack 💎</div>
+    <div class="logo-sub">ENTRAR</div>
+    <input type="email" id="loginEmail" placeholder="seu@email.com">
+    <input type="password" id="loginSenha" placeholder="Senha">
+    <button class="btn-primary" onclick="login()">ENTRAR</button>
+    <button class="btn-ghost" onclick="irRegistro()">Criar conta →</button>
+  </div>
+</div>
+
+<!-- ── CHAT ── -->
+<div class="chat-screen" id="chatScreen">
+  <div class="header">
+    <div class="header-left">
+      <div class="header-logo">💎</div>
+      <div>
+        <div class="header-name">DiamanteBlack</div>
+        <div class="header-status">
+          <div class="status-dot" id="statusDot"></div>
+          <span id="statusText">Online</span>
+        </div>
+      </div>
+    </div>
+    <div class="header-btns">
+      <button class="icon-btn" onclick="abrirModal()" title="Configurações">⚙️</button>
+    </div>
+  </div>
+
+  <div class="chat-area" id="chatArea"></div>
+
+  <div class="input-area">
+    <button class="icon-btn" onclick="document.getElementById('fileInput').click()" title="Arquivo">📎</button>
+    <button class="icon-btn" onclick="iniciarVoz()" title="Voz">🎤</button>
+    <textarea id="msgInput" placeholder="Digite sua mensagem..." rows="1"></textarea>
+    <button class="send-btn" id="sendBtn" onclick="enviar()">➤</button>
+  </div>
+
+  <input type="file" id="fileInput" multiple accept=".js,.py,.txt,.html,.css,.json,.ino,.md" style="display:none" onchange="processarArquivos()">
+  <input type="file" id="importInput" accept=".json" style="display:none" onchange="importarMemoria(event)">
+</div>
+
+<!-- ── MODAL ── -->
+<div class="modal" id="modal" onclick="fecharModalFora(event)">
+  <div class="modal-sheet">
+    <div class="modal-top">
+      <span class="modal-title">⚙️ Configurações</span>
+      <button class="icon-btn" onclick="fecharModal()">✕</button>
+    </div>
+
+    <div class="section-label">AGENTES ATIVOS</div>
+    <div id="agentesLista"></div>
+
+    <div class="section-label">MEMÓRIA</div>
+    <button class="wide-btn" onclick="exportarBackup()">📥 Exportar memória</button>
+    <button class="wide-btn" onclick="document.getElementById('importInput').click()">📤 Importar memória</button>
+    <button class="wide-btn" onclick="limparConversa()">🗑️ Limpar conversa</button>
+
+    <div class="info-box" id="infoBox">Carregando...</div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════
+//  CONFIG — EDITE AQUI
+// ══════════════════════════════════════════
+const CONFIG = {
+  // ✅ Seu servidor Diamantebot Gateway (CORS já habilitado, sem Worker!)
+  WORKER_URL: "https://bionic-gpt-app.onrender.com/v1/chat/completions",
+
+  // ✅ Modelo do seu servidor
+  MODEL: "meta-llama/Meta-Llama-3-8B-Instruct",
+
+  AGENTES_PATH: "./agentes/",
+  MAX_FRAGMENTOS: 20,
+  SAUDACAO: "Olá! 💎 Sou o DiamanteBot com memória persistente e IA integrada. Como posso ajudar?",
+};
+
+// ══════════════════════════════════════════
+//  ESTADO
+// ══════════════════════════════════════════
+let currentUser = null;
+let db = null;
+let agentesCarregados = {};
+let agentesAtivos = {};
+let historicoIA = []; // histórico para a IA (contexto)
+let carregando = false;
+
+// ══════════════════════════════════════════
+//  CRIPTO
+// ══════════════════════════════════════════
+async function sha256(str) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+// ══════════════════════════════════════════
+//  NAVEGAÇÃO
+// ══════════════════════════════════════════
+function irLogin()    { document.getElementById('registerScreen').style.display='none'; document.getElementById('loginScreen').style.display='flex'; }
+function irRegistro() { document.getElementById('loginScreen').style.display='none'; document.getElementById('registerScreen').style.display='flex'; }
+
+// ══════════════════════════════════════════
+//  AUTENTICAÇÃO
+// ══════════════════════════════════════════
+function registrar() {
+  const email = document.getElementById('regEmail').value.trim();
+  const senha = document.getElementById('regSenha').value.trim();
+  if (!email || !senha) return toast("Preencha todos os campos!");
+  const users = JSON.parse(localStorage.getItem('db_users') || '[]');
+  if (users.find(u => u.email === email)) return toast("Email já cadastrado!");
+  sha256(senha).then(hash => {
+    users.push({ email, hash });
+    localStorage.setItem('db_users', JSON.stringify(users));
+    toast("Conta criada! Faça login.", true);
+    irLogin();
+  });
+}
+
+async function login() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const senha = document.getElementById('loginSenha').value.trim();
+  const users = JSON.parse(localStorage.getItem('db_users') || '[]');
+  const user = users.find(u => u.email === email);
+  if (!user || await sha256(senha) !== user.hash) return toast("Email ou senha incorretos!");
+
+  currentUser = email;
+  await initDB();
+  await carregarAgentes();
+  carregarAgentesAtivos();
+
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('chatScreen').style.display = 'flex';
+
+  adicionarMsg("bot", CONFIG.SAUDACAO);
+}
+
+// ══════════════════════════════════════════
+//  BANCO DE DADOS (IndexedDB)
+// ══════════════════════════════════════════
+function initDB() {
+  return new Promise(resolve => {
+    const req = indexedDB.open(`DiamanteBlack_${currentUser}`, 1);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains('conhecimento'))
+        d.createObjectStore('conhecimento', { keyPath: 'id', autoIncrement: true });
+    };
+    req.onsuccess = e => { db = e.target.result; resolve(); };
+  });
+}
+
+function dbGetAll() {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(['conhecimento'], 'readonly');
+    const req = tx.objectStore('conhecimento').getAll();
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+
+function dbAdd(item) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(['conhecimento'], 'readwrite');
+    const req = tx.objectStore('conhecimento').add(item);
+    req.onsuccess = () => res();
+    req.onerror = () => rej(req.error);
+  });
+}
+
+// ══════════════════════════════════════════
+//  AGENTES
+// ══════════════════════════════════════════
+async function carregarAgentes() {
+  agentesCarregados = {};
+  try {
+    const res = await fetch(CONFIG.AGENTES_PATH + 'index.json');
+    if (!res.ok) throw new Error("index.json não encontrado");
+    const data = await res.json();
+    const lista = data.agentes || [];
+    const processados = new Set();
+    const fila = [...lista];
+
+    while (fila.length > 0) {
+      const arq = fila.shift();
+      if (processados.has(arq)) continue;
+      processados.add(arq);
+      try {
+        const r = await fetch(CONFIG.AGENTES_PATH + arq);
+        if (r.ok) {
+          const d = await r.json().catch(() => ({}));
+          agentesCarregados[arq.replace('.json', '')] = d;
+        }
+      } catch(e) { /* agente não encontrado, ignora */ }
+    }
+  } catch(e) {
+    console.warn("[Agentes] Sem index.json ou pasta agentes/. Usando apenas IA.");
+  }
+}
+
+function carregarAgentesAtivos() {
+  const saved = localStorage.getItem(`agentes_${currentUser}`);
+  agentesAtivos = saved ? JSON.parse(saved) : {};
+  Object.keys(agentesCarregados).forEach(n => {
+    if (!(n in agentesAtivos)) agentesAtivos[n] = true;
+  });
+}
+
+function salvarAgentesAtivos() {
+  localStorage.setItem(`agentes_${currentUser}`, JSON.stringify(agentesAtivos));
+}
+
+function toggleAgente(nome) {
+  agentesAtivos[nome] = !agentesAtivos[nome];
+  salvarAgentesAtivos();
+  renderAgentes();
+}
+
+function renderAgentes() {
+  const el = document.getElementById('agentesLista');
+  const nomes = Object.keys(agentesCarregados);
+  if (nomes.length === 0) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--text-muted);padding:8px">Nenhum agente carregado</div>';
+    return;
+  }
+  el.innerHTML = nomes.map(n => `
+    <div class="agent-row">
+      <span>${n}</span>
+      <button class="toggle ${agentesAtivos[n] ? 'on' : ''}" onclick="toggleAgente('${n}')">✓</button>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════
+//  BUSCA NA MEMÓRIA (RAG)
+// ══════════════════════════════════════════
+async function buscarMemoria(texto) {
+  const todos = await dbGetAll();
+  const termo = texto.toLowerCase();
+  const palavras = termo.split(/\s+/);
+
+  return todos
+    .map(item => {
+      let score = 0;
+      const c = item.conteudo.toLowerCase();
+      const n = item.nome.toLowerCase();
+      palavras.forEach(p => {
+        if (c.includes(p)) score += 2;
+        if (n.includes(p)) score += 3;
+      });
+      return { ...item, score };
+    })
+    .filter(f => f.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, CONFIG.MAX_FRAGMENTOS);
+}
+
+// ══════════════════════════════════════════
+//  IA — CHAMADA VIA WORKER
+// ══════════════════════════════════════════
+async function chamarIA(mensagemUsuario, contextoMemoria) {
+  // Monta system prompt com contexto da memória se houver
+  let systemPrompt = "Você é o DiamanteBot, um assistente inteligente com memória persistente. Responda sempre em português brasileiro de forma clara e útil.";
+
+  if (contextoMemoria.length > 0) {
+    const trechos = contextoMemoria
+      .map(f => `[${f.nome}]: ${f.conteudo.substring(0, 400)}`)
+      .join('\n\n');
+    systemPrompt += `\n\nInformações relevantes da memória do usuário:\n${trechos}`;
+  }
+
+  // Mantém histórico de até 10 trocas para contexto
+  historicoIA.push({ role: "user", content: mensagemUsuario });
+  if (historicoIA.length > 20) historicoIA = historicoIA.slice(-20);
+
+  const payload = {
+    model: CONFIG.MODEL,
+    messages: [
+      { role: "system", content: systemPrompt },
+      ...historicoIA
+    ],
+    max_tokens: 1024,
+    stream: false,
+  };
+
+  const res = await fetch(CONFIG.WORKER_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer db_uw2W6KdlHSRogoIML0zKHmboxXF31UAjXxQk8",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+  const data = await res.json();
+  const resposta = data.choices?.[0]?.message?.content || "Sem resposta da IA.";
+
+  // Salva resposta no histórico
+  historicoIA.push({ role: "assistant", content: resposta });
+
+  return resposta;
+}
+
+// ══════════════════════════════════════════
+//  ENVIAR MENSAGEM
+// ══════════════════════════════════════════
+async function enviar() {
+  const input = document.getElementById('msgInput');
+  const texto = input.value.trim();
+  if (!texto || carregando) return;
+
+  carregando = true;
+  document.getElementById('sendBtn').disabled = true;
+  input.value = '';
+  input.style.height = '44px';
+
+  adicionarMsg("user", texto);
+  mostrarDigitando();
+  setStatus("Pensando...", true);
+
+  try {
+    // 1. Busca memória relevante
+    const memoria = await buscarMemoria(texto);
+
+    // 2. Chama IA via Worker
+    let resposta = await chamarIA(texto, memoria);
+
+    // 3. Executa agentes locais (se tiverem método executar)
+    const respostasAgentes = [];
+    for (const nome in agentesAtivos) {
+      if (agentesAtivos[nome] && agentesCarregados[nome]?.executar) {
+        try {
+          const r = await agentesCarregados[nome].executar(texto);
+          if (r) respostasAgentes.push(`<strong>✨ ${nome}:</strong> ${r}`);
+        } catch(e) {}
+      }
+    }
+
+    if (respostasAgentes.length > 0) {
+      resposta += '<hr style="border:1px solid var(--border);margin:10px 0">' + respostasAgentes.join('<br>');
+    }
+
+    removerDigitando();
+    adicionarMsg("bot", resposta, true);
+
+  } catch(err) {
+    removerDigitando();
+    console.error(err);
+    toast("Erro ao chamar a IA. Verifique o WORKER_URL no código.");
+    adicionarMsg("bot", `⚠️ Erro: ${err.message}<br><br>Verifique se o <strong>WORKER_URL</strong> está configurado corretamente no código.`);
+  } finally {
+    carregando = false;
+    document.getElementById('sendBtn').disabled = false;
+    setStatus("Online", false);
+  }
+}
+
+// ══════════════════════════════════════════
+//  UI — MENSAGENS
+// ══════════════════════════════════════════
+function adicionarMsg(remetente, html, comAcoes = false) {
+  const chat = document.getElementById('chatArea');
+  const wrap = document.createElement('div');
+  wrap.className = `msg ${remetente}`;
+
+  const avatar = document.createElement('div');
+  avatar.className = 'msg-avatar';
+  avatar.textContent = remetente === 'bot' ? '💎' : '👤';
+
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = formatarTexto(html);
+
+  if (remetente === 'bot' && comAcoes) {
+    const acoes = document.createElement('div');
+    acoes.className = 'msg-actions';
+    acoes.innerHTML = `
+      <button class="act-btn" onclick="copiar(this)">📋 Copiar</button>
+      <button class="act-btn" onclick="ouvir(this)">🔊 Ouvir</button>
+    `;
+    bubble.appendChild(acoes);
+  }
+
+  wrap.appendChild(avatar);
+  wrap.appendChild(bubble);
+  chat.appendChild(wrap);
+  setTimeout(() => chat.scrollTop = chat.scrollHeight, 50);
+}
+
+function formatarTexto(txt) {
+  // blocos de código
+  txt = txt.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) =>
+    `<pre><code>${escHtml(code.trim())}</code></pre>`);
+  // código inline
+  txt = txt.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // negrito
+  txt = txt.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  // quebras de linha
+  txt = txt.replace(/\n/g, '<br>');
+  return txt;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function mostrarDigitando() {
+  const chat = document.getElementById('chatArea');
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.id = 'typing';
+  div.innerHTML = `
+    <div class="msg-avatar">💎</div>
+    <div class="typing-dots"><span></span><span></span><span></span></div>
+  `;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function removerDigitando() {
+  document.getElementById('typing')?.remove();
+}
+
+function setStatus(txt, pensando) {
+  document.getElementById('statusText').textContent = txt;
+  const dot = document.getElementById('statusDot');
+  dot.className = 'status-dot' + (pensando ? ' thinking' : '');
+}
+
+// ══════════════════════════════════════════
+//  AÇÕES DE MENSAGEM
+// ══════════════════════════════════════════
+function copiar(btn) {
+  const txt = btn.closest('.bubble').innerText.replace(/📋 Copiar|🔊 Ouvir/g,'').trim();
+  navigator.clipboard.writeText(txt).then(() => {
+    btn.textContent = '✅ Copiado!';
+    setTimeout(() => btn.textContent = '📋 Copiar', 2000);
+  });
+}
+
+function ouvir(btn) {
+  const txt = btn.closest('.bubble').innerText.replace(/📋 Copiar|🔊 Ouvir/g,'').trim();
+  const u = new SpeechSynthesisUtterance(txt);
+  u.lang = 'pt-BR'; u.rate = 0.9;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+// ══════════════════════════════════════════
+//  VOZ
+// ══════════════════════════════════════════
+function iniciarVoz() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return toast("Voz não suportada neste navegador.");
+  const r = new SR();
+  r.lang = 'pt-BR';
+  r.onstart = () => setStatus("🎤 Ouvindo...", true);
+  r.onresult = e => {
+    document.getElementById('msgInput').value = e.results[0][0].transcript;
+  };
+  r.onend = () => setStatus("Online", false);
+  r.start();
+}
+
+// ══════════════════════════════════════════
+//  ARQUIVOS
+// ══════════════════════════════════════════
+async function processarArquivos() {
+  const files = document.getElementById('fileInput').files;
+  if (!files.length) return;
+  adicionarMsg("bot", `📂 Processando ${files.length} arquivo(s)...`);
+  let n = 0;
+  for (const f of files) {
+    await new Promise(res => {
+      const reader = new FileReader();
+      reader.onload = async e => {
+        await dbAdd({ nome: f.name, tipo: f.type || f.name.split('.').pop(), conteudo: e.target.result, data: new Date().toISOString() });
+        n++; res();
+      };
+      reader.readAsText(f);
+    });
+  }
+  adicionarMsg("bot", `✅ ${n} arquivo(s) salvos na memória!`);
+  document.getElementById('fileInput').value = '';
+  atualizarInfo();
+}
+
+// ══════════════════════════════════════════
+//  BACKUP
+// ══════════════════════════════════════════
+async function exportarBackup() {
+  const dados = await dbGetAll();
+  const blob = new Blob([JSON.stringify({ versao:"2.0", usuario:currentUser, data:new Date().toISOString(), conhecimento:dados, agentes:agentesAtivos }, null, 2)], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `diamantebot_backup_${Date.now()}.json`;
+  a.click();
+  toast("Backup exportado!", true);
+}
+
+async function importarMemoria(event) {
+  const f = event.target.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = async e => {
+    try {
+      const d = JSON.parse(e.target.result);
+      if (!Array.isArray(d.conhecimento)) throw new Error("Formato inválido");
+      for (const item of d.conhecimento) await dbAdd(item);
+      if (d.agentes) { agentesAtivos = {...agentesAtivos, ...d.agentes}; salvarAgentesAtivos(); }
+      adicionarMsg("bot", `✅ ${d.conhecimento.length} item(ns) importados!`);
+      atualizarInfo(); renderAgentes();
+    } catch(err) { toast("Erro ao importar: " + err.message); }
+  };
+  reader.readAsText(f);
+  event.target.value = '';
+}
+
+function limparConversa() {
+  document.getElementById('chatArea').innerHTML = '';
+  historicoIA = [];
+  adicionarMsg("bot", CONFIG.SAUDACAO);
+  fecharModal();
+}
+
+// ══════════════════════════════════════════
+//  MODAL
+// ══════════════════════════════════════════
+function abrirModal() {
+  document.getElementById('modal').classList.add('open');
+  renderAgentes();
+  atualizarInfo();
+}
+function fecharModal() { document.getElementById('modal').classList.remove('open'); }
+function fecharModalFora(e) { if (e.target === document.getElementById('modal')) fecharModal(); }
+
+async function atualizarInfo() {
+  const todos = await dbGetAll();
+  document.getElementById('infoBox').innerHTML = `
+    <strong style="color:var(--accent)">DiamanteBot v2.1</strong><br>
+    IA integrada via BionicGPT + Cloudflare Worker<br>
+    📊 ${todos.length} item(ns) na memória<br>
+    🤖 ${Object.keys(agentesCarregados).length} agente(s) carregado(s)
+  `;
+}
+
+// ══════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════
+function toast(msg, ok = false) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'show' + (ok ? ' ok' : '');
+  setTimeout(() => el.className = '', 3000);
+}
+
+// ══════════════════════════════════════════
+//  AUTO-RESIZE TEXTAREA
+// ══════════════════════════════════════════
+document.getElementById('msgInput')?.addEventListener('input', function() {
+  this.style.height = '44px';
+  this.style.height = Math.min(this.scrollHeight, 130) + 'px';
+});
+
+document.getElementById('msgInput')?.addEventListener('keypress', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviar(); }
+});
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+window.onload = () => {
+  document.getElementById('loginScreen').style.display = 'flex';
+};
+</script>
+</body>
+</html>
